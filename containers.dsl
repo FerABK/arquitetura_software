@@ -1,11 +1,11 @@
 workspace {
     model {
-        # Personas
+        
         passageiro = person "Passageiro" "Usuário que solicita corridas e realiza pagamentos."
 
         motorista = person "Motorista" "Prestador de serviço que recebe solicitações de corrida e realiza o transporte."
 
-        # Sistema Principal (Aberto em Contêineres)
+      
         sistemaCorrida = softwareSystem "Sistema de Corridas" "Gerencia solicitações de viagens, correspondência de rotas e faturamento." {
 
             appPassageiro = container "Aplicativo do Passageiro" "Interface mobile para solicitar viagens e acompanhar corridas." "Flutter / iOS / Android" "Mobile App"
@@ -17,19 +17,19 @@ workspace {
             bancoDados = container "Banco de Dados" "Armazena dados de usuários, histórico de viagens, pagamentos e coordenadas físicas." "PostgreSQL + PostGIS" "Database"
         }
 
-        # Sistemas Externos
+       
         gatewayPagamento = softwareSystem "Gateway de Pagamento" "Processa transações financeiras de cartões de crédito e Pix." "External"
 
         servicoMapas = softwareSystem "Serviço de Mapas" "Fornece mapas, rotas, distância e tempo estimado de viagem." "External"
 
         servicoVerificacao = softwareSystem "Serviço de Verificação" "Fornece informações de score e antecedentes dos prestadores." "External"
 
-        # Relacionamentos dos Usuários com os Contêineres
+     
         passageiro -> appPassageiro "Solicita corridas e acompanha viagens usando"
 
         motorista -> appMotorista "Gerencia cadastro e corridas usando"
 
-        # Relacionamentos entre Contêineres e Sistemas Externos
+        
         appPassageiro -> apiGateway "Faz requisições e envia localização via" "JSON/HTTPS e WebSockets"
 
         appMotorista -> apiGateway "Recebe solicitações e envia respostas via" "JSON/HTTPS e WebSockets"
@@ -44,7 +44,7 @@ workspace {
     }
 
     views {
-        # Visualização de nível 2 (Containers)
+      
         container sistemaCorrida "Containers_Corrida" {
             include *
             autolayout lr

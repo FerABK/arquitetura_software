@@ -7,15 +7,15 @@ workspace {
 
         servicoVerificacao = softwareSystem "Serviço de Verificação" "Fornece informações de score e antecedentes dos prestadores." "External"
 
-        # Sistema Principal
+        
         sistemaCorrida = softwareSystem "Sistema de Corridas" "Plataforma de gerenciamento de viagens." {
 
             bancoDados = container "Banco de Dados" "Armazena dados de usuários, prestadores, corridas, pagamentos e histórico de localização." "PostgreSQL + PostGIS" "Database"
 
-            # Backend aberto em Componentes com Divisões Internas (Grupos)
+            
             apiGateway = container "API Gateway / Backend" "Centraliza as regras de negócio, geolocalização e matching de corridas." "Go / Node.js" "Backend API" {
 
-                # Grupo 1: Componentes expostos de API
+                
                 group "Camada de API / Entrada" {
                     controladorAutenticacao = component "Controlador de Autenticação" "Valida tokens de acesso e gerencia sessões de passageiros e motoristas." "Go Controller"
 
@@ -24,7 +24,7 @@ workspace {
                     controladorPagamento = component "Controlador de Pagamentos" "Recebe solicitações de cobrança e consulta de pagamentos." "Go Controller"
                 }
 
-                # Grupo 2: Regras de negócio internas
+                
                 group "Camada de Negócio / Core" {
                     motorMatching = component "Motor de Correspondência (Matching)" "Encontra prestadores disponíveis e aptos considerando proximidade, categoria e disponibilidade." "Go Service"
 
@@ -39,7 +39,7 @@ workspace {
                     gerenciadorCadastro = component "Gerenciador de Cadastro" "Controla o cadastro de passageiros e prestadores, incluindo a categoria e os dados dos veículos." "Go Service"
                 }
 
-                # Grupo 3: Persistência e Integração
+               
                 group "Camada de Persistência e Integração" {
                     repositorioUsuarios = component "Repositório de Usuários" "Consulta e grava os dados de passageiros e motoristas." "Repository"
 
@@ -52,7 +52,7 @@ workspace {
             }
         }
 
-        # Relacionamentos Internos do Backend (Da API para o Core)
+        
         controladorAutenticacao -> gerenciadorCadastro "Solicita operações de cadastro"
         controladorAutenticacao -> repositorioUsuarios "Verifica credenciais em"
 
@@ -74,7 +74,7 @@ workspace {
 
         gerenciadorLocalizacao -> repositorioUsuarios "Atualiza coordenadas dos prestadores"
 
-        # Relacionamentos dos Componentes com Banco e Sistemas Externos
+       
         repositorioUsuarios -> bancoDados "Lê e grava dados de usuários" "SQL/TCP"
 
         repositorioCorridas -> bancoDados "Lê e grava dados das corridas" "SQL/TCP"
@@ -99,7 +99,7 @@ workspace {
     }
 
     views {
-        # Visualização de nível 3 (Componentes) do Backend
+       
         component apiGateway "Componentes_Backend_Agrupados" {
             include *
             autolayout lr
